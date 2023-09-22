@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Price Prediction in HCM city</title>
+    <style>
+        /* reset CSS */
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            position: relative;
+        }
+
+        .main {
+            width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 64px 0;
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+        }
+
+        .row {
+            margin-left: -12px;
+            margin-right: -12px;
+        }
+
+        .row::after {
+            content: '';
+            clear: both;
+            display: block;
+        }
+
+        .col {
+            float: left;
+            padding-left: 12px;
+            padding-right: 12px;
+        }
+
+        .col-haft {
+            width: 50%;
+        }
+
+        label {
+            color: #07074D;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 24px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        .mt-24 {
+            margin-top: 24px;
+        }
+
+        .heading {
+            font-size: 30px;
+            font-weight: 500;
+            text-align: center;
+            padding-bottom: 32px;
+        }
+
+        .form-input {
+            padding: 13px 22px;
+            border: 1.5px solid #ccc;
+            width: 100%;
+            outline: none;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        .form-input:focus {
+            border-color: #6a64f1;
+            box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .background-image img {
+            width: 100%;
+        }
+
+        .btn {
+            cursor: pointer;
+            display: inline-block;
+            margin-right: 10px;
+            background: #339dff;
+            color: #fff;
+            text-decoration: none;
+            font-size: 13px;
+            line-height: 38px;
+            border-radius: 50px;
+            -webkit-transition: all 0.3s;
+            transition: all 0.3s;
+            width: 125px;
+            border: none;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background: #fff;
+            color: #339dff;
+            box-shadow: 0 4px 4px rgba(83, 100, 255, 0.32);
+        }
+
+        .prediction {
+            font-size: 18px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .cost {
+            font-size: 28px;
+            color: rgb(244, 31, 31);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background-image">
+        <img src="{{ url_for('static', filename='background-image.jpg') }}">
+    </div>
+    <div class="main">
+        <p class="heading">Dự đoán giá nhà tại TP.HCM năm 2023</p>
+
+        <form action='/predict' method="POST" id="form-predict">
+            <div class="row">
+                <div class="col col-haft">
+                    <label for="Khu_vuc">Khu vực</label>
+                    <select name="Khu_vuc" id="Khu_vuc" class="form-input">
+                        <option value="Quận 3">Quận 3</option>
+                        <option value="Quận 4">Quận 4</option>
+                        <option value="Quận 5">Quận 5</option>
+                        <option value="Quận 6">Quận 6</option>
+                        <option value="Quận 8">Quận 8</option>
+                        <option value="Quận 10">Quận 10</option>
+                        <option value="Quận 11">Quận 11</option>
+                        <option value="Tân Bình">Tân Bình</option>
+                        <option value="Phú Nhuận">Phú Nhuận</option>
+                        <!-- Not Ready
+                            <option value="Quận 1">Quận 1</option>
+                            <option value="Quận 2">Quận 2</option>
+                            <option value="Quận 7">Quận 7</option>
+                            <option value="Quận 9">Quận 9</option>
+                            <option value="Quận 12">Quận 12</option>
+
+                            <option value="Bình Thạnh">Bình Thạnh</option>
+                            <option value="Gò Vấp">Gò Vấp</option>
+                            <option value="Bình Tân">Bình Tân</option>
+                            <option value="Tân Phú">Tân Phú</option>
+                            <option value="Hóc Môn">Hóc Môn</option>
+                            <option value="Củ Chi">Củ Chi</option>
+                            <option value="Bình Chánh">Bình Chánh</option>
+                            <option value="Nhà Bè">Nhà Bè</option>
+                            <option value="Cần Giờ">Cần Giờ</option>
+                            <option value="Thủ Đức">Thủ Đức</option>
+                            -->
+                    </select>
+                </div>
+
+                <div class="col col-haft">
+                    <label for="phuong_xa">Phường</label>
+                    <select name="phuong_xa" id="phuong_xa" class="form-input">
+                        <option value="Phường 1">Phường 1</option>
+                        <option value="Phường 2">Phường 2</option>
+                        <option value="Phường 3">Phường 3</option>
+                        <option value="Phường 4">Phường 4</option>
+                        <option value="Phường 5">Phường 5</option>
+                        <option value="Phường 6">Phường 6</option>
+                        <option value="Phường 7">Phường 7</option>
+                        <option value="Phường 8">Phường 8</option>
+                        <option value="Phường 9">Phường 9</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mt-24">
+                <div class="col col-haft">
+                    <label for="Dien_tich">Diện tích</label>
+                    <input type="text" class="form-input" name="Dien_tich" id="Dien_tich" placeholder="ví dụ: 4.8"
+                        required="required" inputmode="decimal" pattern="[0-9]*[.,]?[0-9]*"
+                        oninvalid="InvalidMsg(this);" onchange="setCustomValidity('')" oninput="setCustomValidity(' ')">
+                </div>
+
+                <div class="col col-haft">
+                    <label for="So_tang">Số tầng</label>
+                    <input type="text" class="form-input" name="So_tang" id="So_tang" placeholder="ví dụ: 3"
+                        required="required" inputmode="decimal" pattern="[0-9]*" oninvalid="InvalidMsg(this);"
+                        onchange="setCustomValidity('')" oninput="setCustomValidity(' ')">
+                </div>
+            </div>
+
+            <div class="row mt-24">
+                <div class="col col-haft">
+                    <label for="So_phong_ngu">Số phòng ngủ</label>
+                    <input type="text" class="form-input" name="So_phong_ngu" id="So_phong_ngu" placeholder="ví dụ: 2"
+                        required="required" inputmode="decimal" pattern="[0-9]*" oninvalid="InvalidMsg(this);"
+                        onchange="setCustomValidity('')" oninput="setCustomValidity(' ')">
+                </div>
+
+                <div class="col col-haft">
+                    <label for="So_toilet">Số toilet</label>
+                    <input type="text" class="form-input" name="So_toilet" id="So_toilet" placeholder="ví dụ: 1"
+                        required="required" inputmode="decimal" pattern="[0-9]*" oninvalid="InvalidMsg(this);"
+                        onchange="setCustomValidity('')" oninput="setCustomValidity(' ')">
+                </div>
+            </div>
+
+            <div class="row mt-24">
+                <div class="col col-haft">
+                    <label for="model_name">Mô hình</label>
+                    <select name="model_name" id="model_name" class="form-input">
+                        <option value="model_RidgeR">Ridge</option>
+                        <option value="model_Lasso">Lasso</option>
+                        <option value="model_RFR">Random Forest</option>
+                        <option value="model_SVR">Support Vector Regression</option>
+                        <option value="model_XGB">XGBoost</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn mt-24" type="submit">Dự đoán</button>
+
+        </form>
+        <p id="cost"></p>
+
+        <script>
+            function InvalidMsg(textbox) {
+                if (textbox.value === '') {
+                    textbox.setCustomValidity('Vui lòng nhập');
+                } else {
+                    textbox.setCustomValidity('Vui lòng nhận đúng định dạng');
+                }
+            }
+
+            window.onload = function () {
+                const mainForm = document.getElementById("form-predict")
+                const cost = document.getElementById("cost")
+                const Dien_tich = document.getElementById("Dien_tich")
+                mainForm.onsubmit = function (event) {
+                    event.preventDefault();
+                    const data = new FormData(mainForm);
+                    fetch("/predict", {
+                        method: "POST",
+                        body: data,
+                    },)
+                        .then(response => {
+                            return response.text();
+                        })
+                        .then(html => {
+                            cost.innerHTML = html
+                        })
+                }
+            }
+        </script>
+    </div>
+
+</body>
+
+</html>
